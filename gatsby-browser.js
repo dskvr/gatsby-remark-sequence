@@ -16,19 +16,27 @@ exports.onInitialClientRender = (n, options) => {
     }
   })(document.head || document.getElementsByTagName("head")[0]);
 
+function renderSequence(){
+  var sequenceElements = document.getElementsByClassName("sequence");
+  var sequenceElementsCount = sequenceElements.length;
+  for (var i = 0; i < sequenceElementsCount; i++) {
+    var diagram = Diagram.parse(sequenceElements[i].childNodes[0].nodeValue);
+    sequenceElements[i].childNodes[0].nodeValue="";
+    diagram.drawSVG(sequenceElements[i], options);
+  }
+}
+  
 importScript("https://bramp.github.io/js-sequence-diagrams/js/webfont.js", function () {
   importScript("https://bramp.github.io/js-sequence-diagrams/js/snap.svg-min.js", function () {
     importScript("https://bramp.github.io/js-sequence-diagrams/js/underscore-min.js", function () {
       importScript("https://bramp.github.io/js-sequence-diagrams/js/sequence-diagram-min.js", function () {
-        var sequenceElements = document.getElementsByClassName("sequence");
-        var sequenceElementsCount = sequenceElements.length;
-        for (var i = 0; i < sequenceElementsCount; i++) {
-          var diagram = Diagram.parse(sequenceElements[i].childNodes[0].nodeValue);
-          sequenceElements[i].childNodes[0].nodeValue="";
-          diagram.drawSVG(sequenceElements[i], options);
-        }
+        renderSequence()
       });
     });
   });
  });
+}
+
+exports.onRouteUpdate = ({ location, prevLocation }) => {
+  renderSequence()
 }
