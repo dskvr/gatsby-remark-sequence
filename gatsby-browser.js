@@ -7,7 +7,6 @@ export function onRouteUpdate({ location, prevLocation } = {}, options){
     console.log(error);
   }
   var sequenceElements = document.getElementsByClassName("sequence");
-  console.log(sequenceElements)
   var c = sequenceElements.length;
   for (var i = 0; i < c; i++) {
     render(<SequenceDiagram input={sequenceElements[i].childNodes[0].nodeValue} options={options} onError={onError} />, sequenceElements[i])
